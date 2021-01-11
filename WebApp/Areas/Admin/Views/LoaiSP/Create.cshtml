@@ -1,0 +1,41 @@
+﻿@model WebApp.Areas.Admin.Models.LoaiSP
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>@(ViewContext.RouteData.Values["id"] != null ? "Chỉnh sửa sản phẩm" : "Thêm loại sản phẩm mới")</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="@(ViewContext.RouteData.Values["id"] != null ? "Edit" : "Create")" asp-route-id="@(ViewContext.RouteData.Values["id"] != null ? ViewContext.RouteData.Values["id"]: "")">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                if (ViewContext.RouteData.Values["id"] != null)
+                {
+                    <input type="hidden" asp-for="MaLoai" />
+                }
+            }
+
+            <div class="form-group">
+                <label asp-for="TenLoai" class="control-label"></label>
+                <input asp-for="TenLoai" class="form-control" />
+                <span asp-validation-for="TenLoai" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="TrangThai" /> @Html.DisplayNameFor(model => model.TrangThai)
+                </label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="@(ViewContext.RouteData.Values["id"]!=null ? "Cập nhật":"Thêm mới")" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+

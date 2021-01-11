@@ -1,0 +1,79 @@
+﻿@model WebApp.Areas.Admin.Models.LoaiSP
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<partial name="Create" />
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên loại
+            </th>
+            <th>
+                Mã loại
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (LoaiSP item in ViewBag.ListLSP)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenLoai)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TrangThai)
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-action="Index" asp-route-id="@item.MaLoai">Chỉnh sửa</a> |
+                    <button class="btn btn-warning" name="btn_update_stt" data-id="@item.MaLoai"
+                            data-stt="@(item.TrangThai== true ?0:1)" data-name="@item.TenLoai">
+                        @if (item.TrangThai == true)
+                        {
+                            @:Ẩn
+                        }
+                        else
+                        {
+                            @:Hiện
+                        }
+
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    $('button[name=btn_update_stt]').click(function () {
+        var id = $(this).attr('data-id');
+        var name = $(this).attr('data-name');
+        var stt = ($(this).attr('data-stt') == 0 ? false : true);
+        $.ajax({
+            method: "PUT",
+            url: "/api/LoaiSP_API/PutLoaiSP/" + id,
+            contentType: 'application/json;charset=utf-8',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+           
+            data: JSON.stringify({ "MaLoai": id, "TenLoai": name, "TrangThai": stt }),
+        }).done(function (msg) {
+            alert("Data Save: " + msg);
+        });
+    });
+</script>
+   
+   
+}
+
